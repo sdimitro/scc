@@ -1,0 +1,6 @@
+- strncpy vs strlcpy
+- write tests
+- check for leaks
+- free memory
+- reformat makefile (portability first)
+- leak checker script
