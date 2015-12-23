@@ -117,6 +117,7 @@ interp_binop(int l, enum binop bop, int r)
 		break;
 
 	default:
+		fprintf(stderr, "error: interp_binop() - impossible\n");
 		break;
 	}
 
@@ -160,7 +161,7 @@ interp_expr(struct expr *e, struct table *t)
 		break;
 
 	default:
-		fprintf(stderr, "error: exp_maxargs() - impossible\n");
+		fprintf(stderr, "error: interp_expr() - impossible\n");
 		break;
 	}
 
