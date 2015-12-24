@@ -52,14 +52,16 @@ char *token_names[] = {
 	"NIL",
 	"FUNCTION",
 	"VAR",
-	"TYPE"
+	"TYPE",
+	"NUM",
+	"SLITERAL"
 };
 
 
 char *
 token_name(int tok)
 {
-	return (tok < 257 || tok > 299) ?
+	return (tok < 257 || tok > 301) ?
 		"BAD_TOKEN" : token_names[tok - 257];
 }
 
@@ -85,12 +87,12 @@ main(int c, char *v[])
 
 		switch(tok) {
 		case ID:
-		case STRING:
+		case SLITERAL:
 			printf("%10s %4d %s\n", token_name(tok),
 			       EM_tok_pos, yylval.sval);
 			break;
 
-		case INT:
+		case NUM:
 			printf("%10s %4d %d\n", token_name(tok),
 			       EM_tok_pos, yylval.ival);
 			break;

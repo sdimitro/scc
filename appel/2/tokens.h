@@ -52,5 +52,7 @@ extern union YYSTYPE yylval;
 # define FUNCTION  297
 # define VAR       298
 # define TYPE      299
+# define NUM       300
+# define SLITERAL  301
 
 #endif /* __TOKENS_H */
