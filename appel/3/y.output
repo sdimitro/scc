@@ -1,0 +1,36 @@
+   0  $accept : program $end
+
+   1  program : exp
+
+   2  exp : ID
+
+state 0
+	$accept : . program $end  (0)
+
+	ID  shift 1
+	.  error
+
+	program  goto 2
+	exp  goto 3
+
+
+state 1
+	exp : ID .  (2)
+
+	.  reduce 2
+
+
+state 2
+	$accept : program . $end  (0)
+
+	$end  accept
+
+
+state 3
+	program : exp .  (1)
+
+	.  reduce 1
+
+
+47 terminals, 3 nonterminals
+3 grammar rules, 4 states
