@@ -40,6 +40,11 @@ program
 	: expr
 	;
 
+asgnlist
+	: ID EQ expr
+	| ID EQ expr COMMA asgnlist
+	;
+
 decs
 	: dec
 	| decs dec
@@ -57,14 +62,20 @@ expr
 	| SLITERAL
 	/* Array creation */
 	| ID LBRACK expr RBRACK OF expr
-	/* ============== */
+	| ID LBRACE tidlist RBRACE
+	/* Record Assignment */
+	| ID LBRACE RBRACE
+	| ID LBRACE asgnlist RBRACE
+	/* Standard Assignment */
+	| lvalue ASSIGN expr
+	/* LET - IN - END */
 	| LET decs IN END
 	| LET decs IN exprseq END
 	;
 
 exprseq
 	: expr
-	: exprseq SEMICOLON expr /* parens around them ? */
+	| exprseq SEMICOLON expr /* parens around them ? */
 	;
 
 lvalue
@@ -73,14 +84,26 @@ lvalue
 	| lvalue LBRACK expr RBRACK
 	;
 
+tidlist
+	: ID COLON expr
+	| ID COLON expr COMMA tidlist
+	;
+
 ty
 	: ID
-	| btype
+	/* Record creation */
+	| LBRACE tyfields RBRACE
+	| LBRACE RBRACE
 	| ARRAY OF ID
 	;
 
 tydec
 	: TYPE ID EQ ty
+	;
+
+tyfields
+	: ID COLON ID
+	| ID COLON ID COMMA tyfields
 	;
 
 vardec
