@@ -26,8 +26,8 @@ errormsg.o: errormsg.c errormsg.h util.h
 lex.yy.o: lex.yy.c y.tab.h errormsg.h util.h
 	$(CC) $(CC_OPTS) $(CC_EOPTS) -c lex.yy.c
 
-lex.yy.c: tiger.lex y.tab.h
-	$(LEX) tiger.lex
+lex.yy.c: tiger.l y.tab.h
+	$(LEX) tiger.l
 
 y.tab.h: y.tab.c
 	echo "y.tab.h was created at the same time as y.tab.c"

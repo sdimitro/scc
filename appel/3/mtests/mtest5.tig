@@ -1,0 +1,7 @@
+let
+	type  arrtype = array of int
+	type  inttype = int
+	var a := 10
+	var b:inttype := 10
+in
+end

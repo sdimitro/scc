@@ -20,8 +20,8 @@ yyerror(char *s)
 	char *sval;
 }
 
-%token <sval> ID STRING
-%token <ival> INT
+%token <sval> ID SLITERAL
+%token <ival> NUM
 
 %token 
   COMMA COLON SEMICOLON LPAREN RPAREN LBRACK RBRACK 
@@ -31,13 +31,60 @@ yyerror(char *s)
   ARRAY IF THEN ELSE WHILE FOR TO DO LET IN END OF 
   BREAK NIL
   FUNCTION VAR TYPE 
-  NUM SLITERAL
 
 %start program
 
 %%
 
-program:	exp
+program
+	: expr
+	;
 
-exp:   ID
+decs
+	: dec
+	| decs dec
+	;
+
+dec
+	: tydec
+	| vardec
+	;
+
+expr
+	: lvalue
+	| NIL
+	| NUM
+	| SLITERAL
+	/* Array creation */
+	| ID LBRACK expr RBRACK OF expr
+	/* ============== */
+	| LET decs IN END
+	| LET decs IN exprseq END
+	;
+
+exprseq
+	: expr
+	: exprseq SEMICOLON expr /* parens around them ? */
+	;
+
+lvalue
+	: ID
+	| lvalue DOT ID
+	| lvalue LBRACK expr RBRACK
+	;
+
+ty
+	: ID
+	| btype
+	| ARRAY OF ID
+	;
+
+tydec
+	: TYPE ID EQ ty
+	;
+
+vardec
+	: VAR ID ASSIGN expr
+	| VAR ID COLON ID ASSIGN expr
+	;
 

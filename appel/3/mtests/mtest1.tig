@@ -1,0 +1,5 @@
+/* comment */
+let
+	type  inttype = int
+in
+end

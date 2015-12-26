@@ -48,11 +48,9 @@ static void comment(void);
 "function" {adjust(); return FUNCTION;}
 "if"       {adjust(); return IF;}
 "in"       {adjust(); return IN;}
-"int"      {adjust(); return INT;}
 "let"      {adjust(); return LET;}
 "nil"      {adjust(); return NIL;}
 "of"       {adjust(); return OF;}
-"string"   {adjust(); return STRING;}
 "then"     {adjust(); return THEN;}
 "to"       {adjust(); return TO;}
 "type"     {adjust(); return TYPE;}
@@ -89,7 +87,7 @@ static void comment(void);
 [0-9]+     {adjust(); yylval.ival = atoi(yytext); return NUM;}
 (\"([^"\\  \n]|{ES})*\"{WS}*)+ {adjust(); yylval.sval = yytext; return SLITERAL; }
 
-{WS}+      {adjust(); continue;}
+{WS}+      {adjust(); if (strpbrk("\n", yytext)) {EM_newline();} continue;}
 .	       {adjust(); EM_error(EM_tok_pos, "illegal token");}
 
 %%
@@ -110,6 +108,6 @@ comment(void)
 			if (c == 0)
 				break;
 		}
-	// TODO: -flf ?
+
 	yyerror("unterminated comment");
 }
