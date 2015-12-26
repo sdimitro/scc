@@ -85,7 +85,8 @@ static void comment(void);
 {L}{A}*    {adjust(); yylval.sval = yytext; return ID;}
 
 [0-9]+     {adjust(); yylval.ival = atoi(yytext); return NUM;}
-(\"([^"\\  \n]|{ES})*\"{WS}*)+ {adjust(); yylval.sval = yytext; return SLITERAL; }
+
+(\"([^"\\\n]|{ES})*\"{WS}*)+ {adjust(); yylval.sval = yytext; return SLITERAL; }
 
 {WS}+      {adjust(); if (strpbrk("\n", yytext)) {EM_newline();} continue;}
 .	       {adjust(); EM_error(EM_tok_pos, "illegal token");}

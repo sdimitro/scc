@@ -12,8 +12,8 @@ int yylex(void); /* prototype for the lexing function */
 
 char *token_names[] = {
 	"ID",
-	"STRING",
-	"INT",
+	"SLITERAL",
+	"NUM",
 	"COMMA",
 	"COLON",
 	"SEMICOLON",
@@ -53,9 +53,7 @@ char *token_names[] = {
 	"NIL",
 	"FUNCTION",
 	"VAR",
-	"TYPE",
-	"NUM",
-	"SLITERAL"
+	"TYPE"
 };
 
 
