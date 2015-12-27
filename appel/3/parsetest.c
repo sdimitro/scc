@@ -11,7 +11,7 @@ parse(char *fn)
 {
 	EM_reset(fn);
 	if (yyparse() == 0)
-		fprintf(stderr,"Parsing successful!\n");
+		fprintf(stdout,"Parsing successful!\n");
 	else
 		fprintf(stderr,"Parsing failed\n");
 }

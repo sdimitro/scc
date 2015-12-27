@@ -1,2 +1,6 @@
 - take care of compiler warnings
-- free ilist - lex warnings
+- clean up uneeded compiler flags
+- free ilist
+- lex warnings
+- Refactor rules
+-- actual epsilons (empty rules) in grammar

@@ -42,4 +42,4 @@ util.o: util.c util.h
 	$(CC) $(CC_OPTS) $(CC_EOPTS) -c util.c
 
 clean: 
-	rm -f parsetest lextest util.o parsetest.o driver.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o
+	rm -f parsetest lextest util.o parsetest.o driver.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o y.tab.c lex.yy.c

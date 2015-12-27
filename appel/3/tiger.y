@@ -34,11 +34,12 @@ yyerror(char *s)
 
 %nonassoc THEN DO TYPE FUNCTION ID
 %nonassoc ASSIGN LBRACK ELSE OF COMMA
-%nonassoc EQ NEQ LT LE GT GE
 %left OR
 %left AND
+%nonassoc EQ NEQ LT LE GT GE
 %left TIMES DIVIDE
 %left PLUS MINUS
+%left UMINUS
 
 %start program
 
@@ -74,9 +75,12 @@ expr
 	| NIL
 	| NUM
 	| SLITERAL
-	/* Arithmetic */
+	| LPAREN exprseq RPAREN
+	/* Boolean Arithmetic */
 	| expr OR expr
 	| expr AND expr
+	| MINUS expr %prec UMINUS
+	/* Arithmetic */
 	| expr TIMES expr
 	| expr DIVIDE expr
 	| expr PLUS expr
@@ -97,7 +101,6 @@ expr
 	/* Standard Assignment */
 	| lvalue ASSIGN expr
 	/* LET - IN - END */
-	| LET decs IN END
 	| LET decs IN exprseq END
 	/* IF - ELSE - END */
 	| IF expr THEN expr ELSE expr
@@ -105,24 +108,30 @@ expr
 	/* Function call */
 	| ID LPAREN RPAREN
 	| ID LPAREN arglist RPAREN
+	/* WHILE - DO */
+	| WHILE expr DO expr
+	/* FOR - TO - DO */
+	| FOR ID ASSIGN expr TO expr DO expr
 	;
 
 exprseq
-	: expr
-	| exprseq SEMICOLON expr /* parens around them ? */
+	: /* empty */
+	| expr
+	| exprseq SEMICOLON expr
 	;
 
 fundec
-	: FUNCTION ID LPAREN RPAREN EQ expr
-	| FUNCTION ID LPAREN RPAREN COLON ID EQ expr
-	| FUNCTION ID LPAREN tyfields RPAREN EQ expr
-	| FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ expr
+	: FUNCTION ID LPAREN RPAREN EQ exprseq
+	| FUNCTION ID LPAREN RPAREN COLON ID EQ exprseq
+	| FUNCTION ID LPAREN tyfields RPAREN EQ exprseq
+	| FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exprseq
 	;
 
 lvalue
 	: ID
-	| lvalue DOT ID
+	| ID LBRACK expr RBRACK
 	| lvalue LBRACK expr RBRACK
+	| lvalue DOT ID
 	;
 
 tidlist
