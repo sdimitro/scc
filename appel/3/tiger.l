@@ -73,7 +73,7 @@ static void comment(void);
 "*"        {adjust(); return TIMES;}
 "/"        {adjust(); return DIVIDE;}
 "="        {adjust(); return EQ;}
-"!="       {adjust(); return NEQ;}
+"<>"       {adjust(); return NEQ;}
 "<="       {adjust(); return LE;}
 "<"        {adjust(); return LT;}
 ">="       {adjust(); return GE;}
