@@ -69,3 +69,38 @@ let print_op (b:binop) : unit =
         | Minus -> print_string "-"
         | Times -> print_string "*"
         | Div   -> print_string "/"
+
+let rec print_expr (e:expr) : unit =
+    match e with
+          IdExp id -> print_string id
+        | NumExp n -> print_string (string_of_int n)
+        | OpExp (e1, b, e2) -> (print_expr e1; print_op b; print_expr e2)
+        | EseqExp (_, e1)   -> print_expr e1
+
+
+let rec interpStm (s:stmt) (tb:table) : table =
+    let rec interpExp (e:expr) (tb:table) : int * table =
+        match e with
+              IdExp id -> ((lookup tb id), tb)
+            | NumExp n -> (n, tb)
+            | OpExp (e1, b, e2) ->
+                let (v1, tb1) = interpExp e1 tb  in
+                let (v2, tb2) = interpExp e2 tb1 in
+                        (match b with
+                              Plus  -> ((v1 + v2), tb2)
+                            | Minus -> ((v1 - v2), tb2)
+                            | Times -> ((v1 * v2), tb2)
+                            | Div   -> ((v1 / v2), tb2))
+            | EseqExp (s, e) -> interpExp e (interpStm s tb)
+    in
+    match s with
+          CompoundStm (s1, s2) -> interpStm s2 (interpStm s1 tb)
+        | AssignStm (id, e1)   ->
+            let (v, tb1) = interpExp e1 tb in
+                update tb1 id v
+        | PrintStm elist ->
+            match elist with
+                  []     -> tb
+                | (h::t) ->
+                    let (_, tb1) = (print_expr h; interpExp h tb) in
+                        interpStm (PrintStm t)  tb1
