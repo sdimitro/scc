@@ -32,8 +32,8 @@ let list_max = function
       [] -> invalid_arg "empty list"
     | x::xs -> List.fold_left max x xs
 
-let rec maxargs stm =
-    let rec maxargs_e exp =
+let rec maxargs (stm:stmt) : int =
+    let rec maxargs_e (exp:expr) : int =
         match exp with
             | EseqExp (s, e) ->
                 let res1 = maxargs s in
@@ -52,3 +52,20 @@ let rec maxargs stm =
             let res2 = maxargs s2 in
                 if res1 > res2 then res1 else res2
 
+(* environment variables for interpreter *)
+type table = (id * int) list
+
+let update tb id integer = (id, integer) :: tb
+
+let rec lookup (tb:table) (id:id) : int =
+    match tb with
+        | [] -> 0
+        | ((id', v) :: tb') ->
+            if id = id' then v else lookup tb' id
+
+let print_op (b:binop) : unit = 
+    match b with 
+          Plus  -> print_string "+"
+        | Minus -> print_string "-"
+        | Times -> print_string "*"
+        | Div   -> print_string "/"
